@@ -1,0 +1,224 @@
+<div *ngIf="isLoading" align="center">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<div *ngIf="error" align="center" class="mat-error">{{ error }}</div>
+
+<h3 *ngIf="posts?.length === 0" style="color: gray; margin-top: 16px">
+    No Posts Yet!
+</h3>
+<div *ngFor="let post of posts">
+    <mat-card
+        class="post-display"
+        *ngIf="isDeleted.includes(post._id) && !error"
+        >Post Deleted
+    </mat-card>
+    <mat-card
+        class="post-display"
+        *ngIf="post.shared_user && !isDeleted.includes(post._id) && !error">
+        <div class="header-wrapper">
+            <mat-card-header style="margin: 8px">
+                <img
+                    class="user-avatar"
+                    mat-card-avatar
+                    src="{{
+                        user?.avatar
+                            ? user?.avatar?.url
+                            : 'assets/default/default-profile.jpeg'
+                    }}"
+                    alt="" />
+                <mat-card-title>{{ user?.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-actions>
+                <button mat-icon-button [matMenuTriggerFor]="sharePostsOptions">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #sharePostsOptions>
+                    <button mat-menu-item (click)="onDeletePost(post._id)">
+                        Delete Post
+                    </button>
+                </mat-menu>
+            </mat-card-actions>
+        </div>
+        <mat-card class="share-post-display">
+            <mat-card-header>
+                <img
+                    style="cursor: pointer"
+                    class="user-avatar"
+                    mat-card-avatar
+                    src="{{
+                        post?.user?.avatar
+                            ? post?.user?.avatar?.url
+                            : 'assets/default/default-profile.jpeg'
+                    }}"
+                    alt="" />
+                <mat-card-title> {{ post?.user?.name }}</mat-card-title>
+                <mat-card-subtitle>
+                    <mat-card-subtitle>{{
+                        post?.createdAt | date: 'short':'offset("0630")'
+                    }}</mat-card-subtitle>
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p style="margin-bottom: 16px; text-align: start">
+                    {{ post?.body }}
+                </p>
+                <img
+                    style="max-width: 540px"
+                    *ngIf="post?.image"
+                    matCardImage
+                    [src]="post?.image"
+                    alt="post-image" />
+            </mat-card-content>
+        </mat-card>
+        <mat-divider></mat-divider>
+        <mat-card-footer>
+            <mat-card-actions>
+                <button
+                    [disabled]="isDisabledLike"
+                    *ngIf="!likedPostIdArray.includes(post._id)"
+                    mat-button
+                    class="footer-buttons"
+                    color="accent"
+                    (click)="onLike(post._id)">
+                    <mat-icon>favorite_border</mat-icon>
+                    {{ post.likes }}
+                </button>
+                <button
+                    [disabled]="isDisabledLike"
+                    *ngIf="likedPostIdArray.includes(post._id)"
+                    mat-button
+                    class="footer-buttons"
+                    color="accent"
+                    (click)="onUnlike(post._id)">
+                    <mat-icon>favorite</mat-icon>
+                    {{ post.likes }}
+                </button>
+                <button
+                    mat-button
+                    class="footer-buttons"
+                    (click)="onComment(post._id)">
+                    <mat-icon
+                        [matBadgeHidden]="post.comments?.length === 0"
+                        [matBadge]="post.comments?.length"
+                        matBadgeSize="small"
+                        matBadgePosition="before"
+                        >comment
+                    </mat-icon>
+                    &nbsp; Comment
+                </button>
+                <button
+                    mat-button
+                    class="footer-buttons"
+                    (click)="onShare(post._id)">
+                    <mat-icon>share</mat-icon> &nbsp; Share
+                </button>
+            </mat-card-actions>
+        </mat-card-footer>
+    </mat-card>
+    <mat-card
+        class="post-display"
+        *ngIf="!isDeleted.includes(post._id) && !post.shared_user">
+        <div class="header-wrapper">
+            <mat-card-header>
+                <img
+                    *ngIf="user?.avatar"
+                    matCardAvatar
+                    [src]="user?.avatar?.url"
+                    alt="user-profile" />
+                <img
+                    *ngIf="!user?.avatar"
+                    matCardAvatar
+                    src="assets/default/default-profile.jpeg"
+                    alt="user-profile" />
+                <mat-card-title>{{ user?.name }}</mat-card-title>
+                <mat-card-subtitle>{{
+                    post.createdAt | date: 'short':'offset("0630")'
+                }}</mat-card-subtitle>
+            </mat-card-header>
+            <button mat-icon-button [matMenuTriggerFor]="options">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #options>
+                <button mat-menu-item (click)="onDeletePost(post._id)">
+                    Delete Post
+                </button>
+            </mat-menu>
+        </div>
+        <div align="end">
+            <button
+                *ngIf="post.tagFriends?.length !== 0"
+                mat-button
+                style="cursor: pointer; color: gray"
+                [matMenuTriggerFor]="taggedFriends">
+                Tagged Friends: {{ post.tagFriends?.length }}
+            </button>
+        </div>
+        <mat-menu #taggedFriends="matMenu" style="padding: 0; margin: 0">
+            <mat-card *ngFor="let friend of post.tagFriends">
+                <mat-card-header>
+                    <img
+                        matCardAvatar
+                        src="{{
+                            friend?.avatar
+                                ? friend.avatar
+                                : 'assets/default/default-profile.jpeg'
+                        }}"
+                        alt="" />
+                    <mat-card-title>{{ friend.name }}</mat-card-title>
+                </mat-card-header>
+            </mat-card>
+        </mat-menu>
+        <mat-card-content>
+            <p *ngIf="post.body" style="margin-bottom: 16px">{{ post.body }}</p>
+            <img
+                *ngIf="post.image"
+                matCardImage
+                [src]="post.image"
+                alt="post-image" />
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-footer>
+            <mat-card-actions>
+                <button
+                    [disabled]="isDisabledLike"
+                    *ngIf="!likedPostIdArray.includes(post._id)"
+                    mat-button
+                    class="footer-buttons"
+                    color="accent"
+                    (click)="onLike(post._id)">
+                    <mat-icon>favorite_border</mat-icon>
+                    {{ post.likes }}
+                </button>
+                <button
+                    [disabled]="isDisabledLike"
+                    *ngIf="likedPostIdArray.includes(post._id)"
+                    mat-button
+                    class="footer-buttons"
+                    color="accent"
+                    (click)="onUnlike(post._id)">
+                    <mat-icon>favorite</mat-icon>
+                    {{ post.likes }}
+                </button>
+                <button
+                    mat-button
+                    class="footer-buttons"
+                    (click)="onComment(post._id)">
+                    <mat-icon
+                        [matBadgeHidden]="post.comments?.length === 0"
+                        [matBadge]="post.comments?.length"
+                        matBadgeSize="small"
+                        matBadgePosition="before"
+                        >comment
+                    </mat-icon>
+                    &nbsp; Comment
+                </button>
+                <button
+                    mat-button
+                    class="footer-buttons"
+                    (click)="onShare(post._id)">
+                    <mat-icon>share</mat-icon> &nbsp; Share
+                </button>
+            </mat-card-actions>
+        </mat-card-footer>
+    </mat-card>
+</div>

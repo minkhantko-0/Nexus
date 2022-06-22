@@ -1,0 +1,38 @@
+mat-card {
+    max-width: 360px;
+    min-width: fit-content;
+}
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header {
+    display: flex;
+    align-items: center;
+}
+
+mat-card-header {
+    display: flex;
+    align-items: center;
+}
+mat-card-title {
+    padding: 4px;
+}
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+mat-card {
+    max-height: fit-content;
+    margin: 8px;
+    padding: 8px;
+}
+
+h4 {
+    margin: 0;
+    padding: 0;
+    color: gray;
+}

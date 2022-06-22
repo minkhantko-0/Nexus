@@ -1,0 +1,243 @@
+<div align="center">
+    <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <mat-card *ngIf="error" class="mat-error">{{ error }}</mat-card>
+    <div *ngIf="!groupPostsLoading">
+        <div style="display: flex; align-items: baseline" *ngIf="!isLoading">
+            <button mat-icon-button color="primary" (click)="location.back()">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <h3
+                align=""
+                style="color: gray"
+                *ngIf="viewingGroup?.admin?._id !== userId">
+                Viewing {{ viewingGroup?.admin?.name }}'s Group
+            </h3>
+            <h3
+                align=""
+                style="color: gray"
+                *ngIf="viewingGroup?.admin?._id === userId">
+                Viewing Your Group
+            </h3>
+        </div>
+        <mat-card *ngIf="!error && !isLoading">
+            <div class="group-header-wrapper">
+                <mat-card-header>
+                    <img
+                        mat-card-avatar
+                        matCardImageLarge
+                        src="{{ viewingGroup?.profile }}"
+                        alt="" />
+                    <mat-card-title
+                        align="start"
+                        style="
+                            font-size: xxx-large;
+                            margin-top: 24px;
+                            line-height: 1;
+                        "
+                        >{{ viewingGroup?.name }}</mat-card-title
+                    >
+                    <mat-card-subtitle
+                        align="start"
+                        style="
+                            font-size: x-large;
+                            margin-top: 16px;
+                            line-height: 1;
+                        "
+                        >{{ viewingGroup?.description }}</mat-card-subtitle
+                    >
+                </mat-card-header>
+                <mat-card-actions>
+                    <button
+                        mat-icon-button
+                        color="primary"
+                        matTooltip="Request To Join"
+                        *ngIf="
+                            userId !== viewingGroup?.admin?._id &&
+                            !isRequested.includes(userId) &&
+                            !isMember.includes(userId)
+                        "
+                        (click)="sendRequestToJoin(viewingGroup?._id)">
+                        <mat-icon>contact_mail</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        disabled
+                        matTooltip="Request To Join"
+                        *ngIf="
+                            userId !== viewingGroup?.admin?._id &&
+                            isRequested.includes(userId)
+                        ">
+                        <mat-icon>contact_mail</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        *ngIf="viewingGroup?.admin?._id === userId">
+                        <mat-icon
+                            matTooltip="Delete Group"
+                            (click)="onDeleteGroup(viewingGroup?._id)"
+                            >delete_sweep
+                        </mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        *ngIf="
+                            userId !== viewingGroup?.admin?._id &&
+                            isMember.includes(userId)
+                        "
+                        (click)="onLeaveGroup(viewingGroup?._id)">
+                        <mat-icon matTooltip="Leave Group"
+                            >open_in_new
+                        </mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        *ngIf="userId === viewingGroup?.admin?._id">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewMembers()">
+                            Group Members
+                        </button>
+                        <button mat-menu-item (click)="viewJoinRequests()">
+                            Pending Requests
+                        </button>
+                    </mat-menu>
+                </mat-card-actions>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-card-actions style="margin-top: 16px">
+                <div
+                    *ngIf="
+                        userId === viewingGroup?.admin?._id ||
+                        isMember.includes(userId)
+                    "
+                    class="create-post-button"
+                    (click)="addPost()">
+                    <button mat-icon-button>
+                        <mat-icon>featured_play_list</mat-icon>
+                    </button>
+                    <span>Start a Discussion</span>
+                </div>
+            </mat-card-actions>
+            <mat-card-content>
+                <h2
+                    style="color: gray; margin: 16px"
+                    *ngIf="
+                        userId !== viewingGroup?.admin?._id &&
+                        !isMember.includes(userId)
+                    ">
+                    Only Group Members can see the Group Discussions >.<
+                </h2>
+                <mat-divider></mat-divider>
+                <h3
+                    style="color: gray; padding: 16px; margin: 16px"
+                    *ngIf="
+                        userId === viewingGroup?.admin?._id ||
+                        isMember.includes(userId)
+                    ">
+                    Group Discussions
+                </h3>
+                <div *ngIf="groupPostsLoading">
+                    <app-vertical-loader></app-vertical-loader>
+                </div>
+                <div>
+                    <div *ngFor="let post of groupPosts">
+                        <mat-card
+                            class="post-display"
+                            *ngIf="isDeleted.includes(post._id) && !error"
+                            >Post Deleted
+                        </mat-card>
+                        <mat-card
+                            class="post-display"
+                            *ngIf="!isDeleted.includes(post._id)">
+                            <div class="header-wrapper">
+                                <mat-card-header>
+                                    <img
+                                        *ngIf="post.user?.avatar"
+                                        matCardAvatar
+                                        [src]="post?.user?.avatar?.url"
+                                        alt="user-profile" />
+                                    <img
+                                        *ngIf="!post?.user?.avatar"
+                                        matCardAvatar
+                                        src="assets/default/default-profile.jpeg"
+                                        alt="user-profile" />
+                                    <mat-card-title align="start">{{
+                                        post?.user?.name
+                                    }}</mat-card-title>
+                                    <mat-card-subtitle align="start">{{
+                                        post.createdAt
+                                            | date: 'short':'offset("0630")'
+                                    }}</mat-card-subtitle>
+                                </mat-card-header>
+                                <button
+                                    mat-icon-button
+                                    [matMenuTriggerFor]="options"
+                                    *ngIf="
+                                        userId === post.user._id ||
+                                        userId === viewingGroup?.admin?._id
+                                    ">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #options>
+                                    <button
+                                        mat-menu-item
+                                        (click)="onDeletePost(post._id)">
+                                        Delete Post
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <mat-card-content class="mat-card-content-for-post">
+                                <p
+                                    align="start"
+                                    *ngIf="post.body"
+                                    style="margin-bottom: 16px">
+                                    {{ post.body }}
+                                </p>
+                                <img
+                                    *ngIf="post.image"
+                                    matCardImage
+                                    [src]="post.image"
+                                    alt="post-image" />
+                            </mat-card-content>
+                            <mat-divider></mat-divider>
+                            <mat-card-footer>
+                                <mat-card-actions>
+                                    <button mat-button class="footer-buttons">
+                                        <mat-icon>favorite_border</mat-icon>
+                                    </button>
+                                    <button
+                                        mat-button
+                                        class="footer-buttons"
+                                        (click)="onComment(post._id)">
+                                        <mat-icon
+                                            [matBadgeHidden]="
+                                                post.comments?.length === 0
+                                            "
+                                            [matBadge]="post.comments?.length"
+                                            matBadgeSize="small"
+                                            matBadgePosition="before"
+                                            >comment
+                                        </mat-icon>
+                                        &nbsp; Comment
+                                    </button>
+                                    <button
+                                        mat-button
+                                        class="footer-buttons"
+                                        (click)="onShare(post._id)">
+                                        <mat-icon>share</mat-icon> &nbsp; Share
+                                    </button>
+                                </mat-card-actions>
+                            </mat-card-footer>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="form-wrapper">
+    <div *ngIf="isLoading" align="center">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <form
+        class="mat-form-field-wrapper"
+        #f="ngForm"
+        (ngSubmit)="onSubmit(f)"
+        *ngIf="!isLoading"
+        (keydown.enter)="$event.preventDefault()">
+        <img
+            style="width: 64px; height: auto"
+            src="assets/logo/nexus-logo.png"
+            alt="nexus-logo" />
+        <hr />
+        <mat-form-field appearance="fill" fxFill class="login-field"
+            ><mat-label>Email</mat-label>
+            <input
+                name="email"
+                matInput
+                type="email"
+                placeholder="example123@gmail.com"
+                ngModel
+                required
+                email />
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill" fxFill class="login-field">
+            <mat-label>Password</mat-label>
+            <input
+                minlength="6"
+                name="password"
+                matInput
+                type="password"
+                placeholder="A strong password is always recommended."
+                ngModel
+                required />
+            <mat-hint align="start" *ngIf="isSignUp">
+                *Password must be at least 6 characters
+            </mat-hint>
+        </mat-form-field>
+        <div class="tnc-layout" *ngIf="isSignUp">
+            <mat-slide-toggle
+                class="tnc-style"
+                color="primary"
+                ngModel
+                required
+                name="terms"
+                style="font-size: small"></mat-slide-toggle>
+            <span style="color: gray; font-size: inherit"
+                >&#160;Agree to Terms & Conditions of
+            </span>
+            <span class="logo-design">&#160;Nexus</span>
+        </div>
+        <mat-card class="error-snackbar" *ngIf="errorMess">{{
+            errorMess
+        }}</mat-card>
+        <button
+            mat-raised-button
+            type="submit"
+            color="primary"
+            [disabled]="!f.valid">
+            {{ isSignUp ? 'Sign Up' : 'Login' }}
+        </button>
+        <hr />
+        <p style="color: #3f51b5; font-weight: lighter" *ngIf="isSignUp">
+            Already have an account? |<button
+                mat-flat-button
+                type="button"
+                style="color: #3f51b5; font-weight: normal"
+                (click)="isSignUp = !isSignUp">
+                Login
+            </button>
+        </p>
+        <p style="color: #3f51b5; font-weight: lighter" *ngIf="!isSignUp">
+            New To Nexus? |<button
+                mat-flat-button
+                type="button"
+                style="
+                    color: #3f51b5;
+                    background: transparent;
+                    padding: 0;
+                    margin: 0;
+                    font-weight: normal;
+                "
+                (click)="isSignUp = !isSignUp">
+                Sign up
+            </button>
+        </p>
+    </form>
+</div>

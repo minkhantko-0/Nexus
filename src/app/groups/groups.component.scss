@@ -1,0 +1,18 @@
+mat-tab {
+    text-align: center;
+}
+
+mat-card {
+    margin: 8px;
+    width: 480px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.interior-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

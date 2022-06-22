@@ -1,0 +1,33 @@
+.post-display {
+    margin: 32px;
+    min-width: 480px;
+    max-width: 480px;
+}
+
+.share-post-display {
+    margin: 8px;
+    max-width: 440px;
+}
+
+.header-wrapper,
+.share-post-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+mat-card-content {
+    margin: 0;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-buttons {
+    flex-basis: 33%;
+    margin: 0;
+    padding: 0;
+}

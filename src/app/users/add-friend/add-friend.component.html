@@ -1,0 +1,54 @@
+<div *ngIf="error" align="center" class="mat-error">{{ error }}</div>
+<div align="center" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<div *ngIf="peopleYouMayKnow?.length === 0 && !isLoading" align="center">
+  <h3 style="color: gray; margin-top: 16px">Wow You knows Everyone :)</h3>
+</div>
+<div *ngIf="!error && !isLoading">
+    <div align="center" *ngFor="let person of peopleYouMayKnow | valueArray">
+        <mat-card align="start">
+            <mat-card-header>
+                <img
+                    *ngIf="person.avatar"
+                    style="width: 68px; height: 68px; cursor: pointer"
+                    matCardAvatar
+                    [src]="person?.avatar?.url"
+                    alt="user-profile"
+                    (click)="viewProfile(person._id)" />
+                <img
+                    *ngIf="!person.avatar"
+                    style="width: 68px; height: 68px; cursor: pointer"
+                    matCardAvatar
+                    src="assets/default/default-profile.jpeg"
+                    alt="user-profile"
+                    (click)="viewProfile(person._id)" />
+                <mat-card-title>{{ person.name }}</mat-card-title>
+                <mat-card-subtitle>
+                    <h3 *ngIf="isRemoved.includes(person._id)">
+                        Person Removed
+                    </h3>
+                    <h3 *ngIf="isAddedFriend.includes(person._id)">
+                      Friend Request Sent
+                    </h3>
+                    <mat-card-actions
+                        *ngIf="
+                            !isRemoved.includes(person._id) &&
+                            !isAddedFriend.includes(person._id)
+                        ">
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            (click)="onAddFriend(person._id)">
+                            Add Friend
+                        </button>
+                        &nbsp;
+                        <button mat-flat-button (click)="onRemove(person._id)">
+                            Remove
+                        </button>
+                    </mat-card-actions>
+                </mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+    </div>
+</div>

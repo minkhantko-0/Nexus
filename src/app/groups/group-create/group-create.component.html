@@ -1,0 +1,61 @@
+<div align="center">
+    <div align="start" style="width: fit-content">
+        <div style="display: flex; align-items: baseline" *ngIf="!isLoading">
+            <button mat-icon-button color="primary" (click)="location.back()">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <h3 style="color: gray">Creating a Group</h3>
+        </div>
+        <div *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+        <mat-card *ngIf="error" class="mat-error">{{ error }}</mat-card>
+        <mat-card *ngIf="!error && !isLoading" class="group-create-card">
+            <form #f="ngForm" (ngSubmit)="onCreateGroup(f)">
+                <div class="group-profile-upload">
+                    <div class="group-profile-edit">
+                        <label for="groupProfilePhoto" style="cursor: pointer">
+                            <mat-icon>
+                                {{ image ? 'cached' : 'photo' }}</mat-icon
+                            >
+                            <input
+                                required
+                                (change)="onUpload($event)"
+                                type="file"
+                                id="groupProfilePhoto"
+                                accept=".png, .jpg, .jpeg"
+                                ngModel
+                                name="groupProfile"
+                        /></label>
+                    </div>
+                    <div
+                        *ngIf="!imageUrl"
+                        class="group-profile-preview"
+                        style="background: url('undefined')"></div>
+                    <img
+                        *ngIf="imageUrl"
+                        [src]="imageUrl"
+                        alt=""
+                        class="group-profile-preview" />
+                </div>
+                <mat-form-field>
+                    <mat-label>Group Name</mat-label>
+                    <input matInput required ngModel name="name" />
+                </mat-form-field>
+                <br />
+                <mat-form-field appearance="outline">
+                    <mat-label>Group Description</mat-label>
+                    <textarea
+                        placeholder="e.g. Main Topic of Discussion in the Group"
+                        required
+                        matInput
+                        ngModel
+                        name="description"></textarea>
+                </mat-form-field>
+                <button mat-raised-button color="primary" [disabled]="!f.valid">
+                    Create Group
+                </button>
+            </form>
+        </mat-card>
+    </div>
+</div>

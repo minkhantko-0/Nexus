@@ -1,0 +1,83 @@
+<div align="center">
+    <div style="width: 480px; display: flex; align-items: flex-start">
+        <button mat-icon-button color="primary" (click)="location.back()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+        <h2 style="color: gray; padding: 4px">
+            {{ viewingMember === 'true' ? 'Member List' : 'Pending Requests' }}
+        </h2>
+    </div>
+    <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <h1 *ngIf="list?.length === 0" style="color: gray; padding: 16px">
+        {{
+            viewingMember === 'true'
+                ? 'No Member Yet :('
+                : 'No Pending Requests For Now :)'
+        }}
+    </h1>
+    <mat-card *ngFor="let user of list" class="cards-wrapper">
+        <mat-card-header align="start">
+            <img
+                style="cursor: pointer"
+                matCardAvatar
+                src="{{
+                    user.avatar
+                        ? user.avatar.url
+                        : 'assets/default/default-profile.jpeg'
+                }}"
+                alt=""
+                (click)="viewProfile(user._id)" />
+            <mat-card-title>{{ user.name }}</mat-card-title>
+            <mat-card-subtitle style="padding-left: 12px">
+                <mat-card-actions *ngIf="viewingMember === 'false'">
+                    <h4
+                        style="color: gray"
+                        *ngIf="isAccepted.includes(user._id)">
+                        Request Accepted
+                    </h4>
+                    <h4
+                        style="color: gray"
+                        *ngIf="isDeleted.includes(user._id)">
+                        Request Deleted
+                    </h4>
+                    <button
+                        *ngIf="
+                            !isAccepted.includes(user._id) &&
+                            !isDeleted.includes(user._id)
+                        "
+                        mat-raised-button
+                        color="primary"
+                        (click)="acceptMemberRequest(user._id)">
+                        Accept
+                    </button>
+                    <button
+                        *ngIf="
+                            !isAccepted.includes(user._id) &&
+                            !isDeleted.includes(user._id)
+                        "
+                        mat-button
+                        color="warn"
+                        (click)="rejectMemberRequest(user._id)">
+                        Delete
+                    </button>
+                </mat-card-actions>
+                <mat-card-actions *ngIf="viewingMember === 'true'">
+                    <h4
+                        style="color: gray"
+                        *ngIf="isDeleted.includes(user._id)">
+                        Member Removed
+                    </h4>
+                    <button
+                        mat-raised-button
+                        color="warn"
+                        *ngIf="!isDeleted.includes(user._id)"
+                        (click)="kickMember(user._id)">
+                        Remove
+                    </button>
+                </mat-card-actions>
+            </mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+</div>

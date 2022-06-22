@@ -1,0 +1,64 @@
+.user-profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-card {
+    max-width: 240px;
+    text-align: center;
+}
+
+.profile-picture {
+    height: 108px;
+    width: 108px;
+    background-size: cover;
+    border: 2px solid black;
+    margin: 0 0 4px 0;
+}
+
+.profile-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.user-info {
+    color: darken(darkgray, 25);
+    font-size: x-small;
+    font-weight: lighter;
+    width: 100%;
+}
+
+.user-icon button {
+    font-weight: lighter;
+    font-size: x-small;
+}
+
+mat-menu {
+    height: fit-content;
+    width: auto;
+}
+
+.title {
+    display: block;
+    min-width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    font-weight: inherit;
+    font-size: larger;
+    color: gray;
+}
+
+.gradient-line {
+    padding: 0;
+    width: 100%;
+    height: 2px;
+    background: rgb(210, 95, 251);
+    background: radial-gradient(
+        circle,
+        rgba(210, 95, 251, 1) 0%,
+        rgba(63, 81, 181, 1) 47%,
+        rgba(207, 52, 191, 1) 100%
+    );
+}

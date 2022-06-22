@@ -1,0 +1,14 @@
+<app-header></app-header>
+
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab label="People You May Know">
+        <ng-template matTabContent>
+            <app-add-friend></app-add-friend>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Friend Requests">
+        <ng-template matTabContent>
+            <app-friend-requests></app-friend-requests>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>

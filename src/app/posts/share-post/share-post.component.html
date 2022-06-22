@@ -1,0 +1,76 @@
+<div align="center">
+    <div class="share-post-wrapper">
+        <div
+            align="start"
+            *ngIf="!isLoading && !error"
+            class="sharing-header-wrapper">
+            <div class="sharing-header">
+                <button mat-icon-button (click)="location.back()">
+                    <mat-icon>chevron_left</mat-icon>
+                </button>
+                <span style="font-size: large"
+                    >Sharing {{ sharePost?.user?.name }}'s post</span
+                >
+            </div>
+            <button mat-icon-button color="primary" (click)="onSharePost()">
+                <mat-icon>upload</mat-icon>
+            </button>
+        </div>
+
+        <div *ngIf="isLoading" align="center" style="margin: 32px">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+
+        <mat-card *ngIf="error" align="center" class="error-snackbar">{{
+            error | uppercase
+        }}</mat-card>
+
+        <mat-card *ngIf="!isLoading && !error">
+            <mat-card-header>
+                <img
+                    class="user-avatar"
+                    mat-card-avatar
+                    src="{{
+                        sharingUser?.avatar
+                            ? sharingUser?.avatar?.url
+                            : 'assets/default/default-profile.jpeg'
+                    }}"
+                    alt="" />
+                <mat-card-title>{{ sharingUser?.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-card>
+                <mat-card-header>
+                    <img
+                        class="user-avatar"
+                        mat-card-avatar
+                        src="{{
+                            sharePost?.user?.avatar
+                                ? sharePost?.user?.avatar?.url
+                                : 'assets/default/default-profile.jpeg'
+                        }}"
+                        alt="" />
+                    <mat-card-title>
+                        {{ sharePost?.user?.name }}</mat-card-title
+                    >
+                    <mat-card-subtitle>
+                        <mat-card-subtitle>{{
+                            sharePost?.createdAt
+                                | date: 'short':'offset("0630")'
+                        }}</mat-card-subtitle>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p style="margin-bottom: 16px; text-align: start">
+                        {{ sharePost?.body }}
+                    </p>
+                    <img
+                        style="max-width: 540px"
+                        *ngIf="sharePost?.image"
+                        matCardImage
+                        [src]="sharePost?.image"
+                        alt="post-image" />
+                </mat-card-content>
+            </mat-card>
+        </mat-card>
+    </div>
+</div>

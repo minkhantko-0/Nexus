@@ -1,0 +1,90 @@
+<app-header></app-header>
+<div *ngIf='error' align='center' class='mat-error'>{{error}}</div>
+<div align="center" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<div align="center" *ngIf="!isLoading && !error">
+    <form #f="ngForm" (ngSubmit)="onSave(f)">
+        <div class="avatar-upload">
+            <div class="avatar-edit">
+                <label for="profilePhoto" style="cursor: pointer">
+                    <mat-icon color="primary">photo</mat-icon>
+                    <input
+                        required
+                        (change)="onUpload($event)"
+                        type="file"
+                        id="profilePhoto"
+                        accept=".png, .jpg, .jpeg"
+                        ngModel
+                        name="profilePhoto"
+                /></label>
+            </div>
+            <div
+                *ngIf="!imageUrl"
+                class="avatar-preview"
+                style="background: url('undefined')"></div>
+            <img
+                *ngIf="imageUrl"
+                [src]="imageUrl"
+                alt=""
+                class="avatar-preview" />
+        </div>
+
+        <mat-form-field *ngIf="currentlyEditingData">
+            <mat-label>Username</mat-label>
+            <input
+                matInput
+                required
+                [ngModel]="currentlyEditingData.name"
+                name="name" />
+        </mat-form-field>
+        <br />
+        <mat-form-field *ngIf="currentlyEditingData">
+            <mat-label>Home Town</mat-label>
+            <input
+                matInput
+                required
+                [ngModel]="currentlyEditingData.hometown"
+                name="hometown" />
+        </mat-form-field>
+        <br />
+        <mat-form-field *ngIf="currentlyEditingData">
+            <mat-label>Birthday</mat-label>
+            <input
+                matInput
+                [matDatepicker]="picker"
+                [ngModel]="currentlyEditingData.dateOfBirth"
+                required
+                name="dateOfBirth" />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <br />
+        <mat-form-field *ngIf="currentlyEditingData" appearance="outline">
+            <mat-label>Bio</mat-label>
+            <textarea
+                placeholder="(Optional)"
+                matInput
+                [ngModel]="currentlyEditingData.bio"
+                name="bio"></textarea>
+        </mat-form-field>
+
+        <div *ngIf="currentlyEditingData" style="margin-top: 32px">
+            <button mat-button type="button" (click)="onCancel()">Cancel</button
+            ><button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="
+                    !f.value['name'] ||
+                    !f.value['dateOfBirth'] ||
+                    !f.value['hometown']
+                ">
+                Save
+            </button>
+        </div>
+    </form>
+</div>

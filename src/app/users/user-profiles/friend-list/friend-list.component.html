@@ -1,0 +1,90 @@
+<div align="center">
+    <div style="width: 360px">
+        <div class='header-wrapper'>
+            <div class="header">
+                <button mat-icon-button (click)="location.back()">
+                    <mat-icon>chevron_left</mat-icon>
+                </button>
+                <h1 align="start" style="color: gray; margin-top: 16px">
+                    Friends
+                </h1>
+            </div>
+            <button mat-icon-button (click)="onBackToCreatePost()">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+        <mat-card *ngIf="error" class="mat-error">{{ error }}</mat-card>
+        <div align="center" *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+        <div *ngIf="!isLoading && !error">
+            <h3
+                *ngIf="friends?.length === 0"
+                align="center"
+                style="color: gray; margin-top: 16px">
+                No Friend Yet
+            </h3>
+            <mat-card *ngFor="let friend of friends | valueArray">
+                <div class="content-wrapper">
+                    <mat-card-header align="start">
+                        <img
+                            style="cursor: pointer"
+                            *ngIf="friend.avatar"
+                            matCardAvatar
+                            [src]="friend.avatar.url"
+                            alt="profile-picture"
+                            (click)="onViewProfile(friend._id)" />
+                        <img
+                            style="cursor: pointer"
+                            *ngIf="!friend.avatar"
+                            matCardAvatar
+                            src="assets/default/default-profile.jpeg"
+                            alt="profile-picture"
+                            (click)="onViewProfile(friend._id)" />
+                        <mat-card-title>{{ friend.name }}</mat-card-title>
+                    </mat-card-header>
+                    <h4 *ngIf="isRemoved.includes(friend._id)">
+                        You are no Longer friends
+                    </h4>
+                    <h4 *ngIf="isBlocked.includes(friend._id)">User Blocked</h4>
+                    <mat-card-actions
+                        *ngIf="
+                            !isRemoved.includes(friend._id) &&
+                            !isBlocked.includes(friend._id) &&
+                            isTaggingFriends !== 'true'
+                        ">
+                        <button
+                            matTooltip="Remove Friend"
+                            mat-icon-button
+                            color="warn"
+                            (click)="onRemoveFriend(friend._id)">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <button
+                            matTooltip="Block"
+                            mat-icon-button
+                            color="warn"
+                            (click)="onBlock(friend._id)">
+                            <mat-icon>block</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                    <mat-card-actions *ngIf="isTaggingFriends === 'true'">
+                        <button
+                            *ngIf="!isTagged.includes(friend._id)"
+                            mat-button
+                            color="primary"
+                            (click)="onTag(friend._id)">
+                            Tag
+                        </button>
+                        <button
+                            mat-button
+                            disabled
+                            *ngIf="isTagged.includes(friend._id)">
+                            Tagged
+                        </button>
+                    </mat-card-actions>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<div align="center">
+    <div style="width: 360px">
+        <div class="header">
+            <button mat-icon-button (click)="location.back()">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <h1 align="start" style="color: gray; margin-top: 16px">
+                Blocked Users
+            </h1>
+        </div>
+        <mat-card *ngIf="error" class="mat-error">{{ error }}</mat-card>
+        <div align="center" *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+        <div *ngIf="!isLoading && !error">
+            <h3
+                *ngIf="blockedUsers?.length === 0"
+                align="center"
+                style="color: gray; margin-top: 16px">
+                No Blocked User :)
+            </h3>
+            <mat-card *ngFor="let user of blockedUsers | valueArray">
+                <div class="content-wrapper">
+                    <mat-card-header align="start">
+                        <img
+                            *ngIf="user.avatar"
+                            matCardAvatar
+                            [src]="user.avatar.url"
+                            alt="profile-picture" />
+                        <img
+                            *ngIf="!user.avatar"
+                            matCardAvatar
+                            src="assets/default/default-profile.jpeg"
+                            alt="profile-picture" />
+                        <mat-card-title>{{ user.name }}</mat-card-title>
+                    </mat-card-header>
+                    <h4 *ngIf="isRemoved.includes(user._id)">
+                        Removed From Blocked-List
+                    </h4>
+                    <mat-card-actions *ngIf="!isRemoved.includes(user._id)">
+                        <button
+                            matTooltip="Unblock"
+                            mat-icon-button
+                            color="primary"
+                            (click)="onUnblock(user._id)">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

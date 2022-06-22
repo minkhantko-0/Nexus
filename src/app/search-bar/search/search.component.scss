@@ -1,0 +1,50 @@
+mat-card {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    margin: 8px;
+}
+
+form {
+    max-height: fit-content;
+    min-width: fit-content;
+}
+
+input {
+    height: 32px;
+    padding: 0 16px;
+    border: #3f51b5 1px solid;
+    border-radius: 25px;
+}
+
+input,
+input:focus {
+    outline: none;
+}
+
+.toggle-button {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    font-size: xx-small;
+}
+
+mat-button-toggle {
+    height: fit-content;
+    width: fit-content;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+}
+
+.user-mat-card-title {
+    font-size: large;
+    padding: 8px 0 0 8px;
+}
+
+.group-card {
+    margin: 8px;
+    width: 360px;
+}

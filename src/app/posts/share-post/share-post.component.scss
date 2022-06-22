@@ -1,0 +1,38 @@
+.share-post-wrapper {
+    margin: 32px;
+    min-width: fit-content;
+    max-width: 480px;
+}
+
+.sharing-header-wrapper,
+.sharing-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: gray;
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+}
+
+mat-card-header {
+    height: fit-content;
+}
+
+mat-card-title {
+    text-align: start;
+}
+
+mat-card-subtitle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: gray;
+    padding: 4px 0;
+}
+
+mat-card-subtitle:hover {
+    cursor: pointer;
+}

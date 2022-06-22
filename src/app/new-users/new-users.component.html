@@ -1,0 +1,181 @@
+<div class="stepper-wrapper">
+    <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div *ngIf="error" class="error-snackbar" align="center">
+        <mat-card>{{ error }}</mat-card>
+    </div>
+    <mat-horizontal-stepper linear #stepper class="stepper" *ngIf="!isLoading">
+        <mat-step [stepControl]="firstForm.control">
+            <mat-divider matLine></mat-divider>
+            <form #firstForm="ngForm" (submit)="onCreate(firstForm)">
+                <ng-template matStepLabel
+                    >Create Your<span class="login-design"> Nexus</span>
+                    Profile
+                </ng-template>
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <label for="profilePhoto" style="cursor: pointer">
+                            <mat-icon color="primary">photo</mat-icon>
+                            <input
+                                (change)="onUpload($event)"
+                                type="file"
+                                id="profilePhoto"
+                                accept=".png, .jpg, .jpeg"
+                                ngModel
+                                name="profilePhoto"
+                        /></label>
+                    </div>
+                    <div
+                        *ngIf="!imageUrl"
+                        class="avatar-preview"
+                        style="background: url('undefined')"></div>
+                    <img
+                        *ngIf="imageUrl"
+                        [src]="imageUrl"
+                        alt=""
+                        class="avatar-preview" />
+                </div>
+
+                <div class="align-wrapper">
+                    <mat-form-field hideRequiredMarker>
+                        <mat-label>Username</mat-label>
+                        <input matInput ngModel name="name" required />
+                        <mat-hint>What should people call you?</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div align="center">
+                    <button
+                        mat-raised-button
+                        matStepperNext
+                        [disabled]="!firstForm.valid"
+                        color="primary">
+                        Next
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondForm.control">
+            <mat-divider matLine></mat-divider>
+            <form
+                #secondForm="ngForm"
+                align="center"
+                (submit)="onInfoSubmit(secondForm)">
+                <ng-template matStepLabel>Fill out your user info</ng-template>
+                <div>
+                    <mat-form-field class="user-info-form">
+                        <mat-label>HomeTown</mat-label>
+                        <input
+                            matInput
+                            placeholder="Where did you grow up?"
+                            name="hometown"
+                            required
+                            ngModel />
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field class="user-info-form">
+                        <mat-label>Birthday</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="picker"
+                            ngModel
+                            placeholder="ex. 3/7/2002"
+                            required
+                            name="birthday" />
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <br />
+
+                    <mat-form-field class="user-info-form" appearance="outline">
+                        <mat-label>Simply Describe Yourself</mat-label>
+                        <textarea
+                            rows="5"
+                            matInput
+                            ngModel
+                            name="bio"
+                            placeholder="(Optional)"></textarea>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button matStepperPrevious mat-button>Back</button>
+                    <span>&nbsp;</span>
+                    <button
+                        mat-raised-button
+                        matStepperNext
+                        [disabled]="!secondForm.valid"
+                        color="primary">
+                        Next
+                    </button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step label="Finishing Up">
+            <mat-divider matLine></mat-divider>
+            <div class="user-profile-card">
+                <mat-card class="profile-card">
+                    <div class="profile-buttons">
+                        <img
+                            style="height: 24px; width: auto"
+                            src="assets/logo/nexus-logo.png"
+                            alt="nexus-logo" />
+                    </div>
+                    <img
+                        *ngIf="user.imgSrc"
+                        class="avatar-preview"
+                        alt=""
+                        mat-card-avatar
+                        src="{{ user.imgSrc }}" />
+                    <img
+                        *ngIf="!user.imgSrc"
+                        class="avatar-preview"
+                        alt=""
+                        mat-card-avatar
+                        src="assets/default/default-profile.jpeg" />
+                    <h2>
+                        {{ user.username }}
+                    </h2>
+                    <mat-card-content>
+                        <p class="user-info">
+                            {{ user.bio }}
+                        </p>
+                        <mat-divider></mat-divider>
+                        <mat-list>
+                            <mat-list-item class="user-info">
+                                <mat-icon>location_city</mat-icon>
+                                {{ user.hometown }}
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+                            <mat-list-item class="user-info">
+                                <mat-icon>event_note</mat-icon>
+                                {{ user.birthday | date }}
+                            </mat-list-item>
+                            <mat-divider *ngIf="user.email"></mat-divider>
+                            <mat-list-item class="user-info" *ngIf="user.email">
+                                <mat-icon>local_post_office</mat-icon>
+                                {{ user.email }}
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="align-wrapper">
+                You are now ready to surf the
+                <span class="login-design">Nexus</span> Web!
+            </div>
+            <div align="center">
+                <button mat-button matStepperPrevious>Back</button>
+                <span>&nbsp;</span>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="onSubmitStepper()">
+                    Confirm
+                </button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

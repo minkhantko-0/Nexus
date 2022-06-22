@@ -1,0 +1,83 @@
+<app-header></app-header>
+<div align="center">
+    <form #f="ngForm" (ngSubmit)="onSearch(f)">
+        <mat-button-toggle-group
+            appearance="legacy"
+            ngModel
+            name="isUser"
+            required
+            class="toggle-button">
+            <mat-button-toggle [value]="true">Users</mat-button-toggle>
+            <mat-button-toggle [value]="false">Groups</mat-button-toggle>
+        </mat-button-toggle-group>
+        <div style="max-width: fit-content; max-height: fit-content">
+            <input
+                [disabled]="isLoading"
+                placeholder="Search.."
+                matInput
+                ngModel
+                type="text"
+                name="searchInput"
+                required
+                id="input" />
+            <button
+                mat-icon-button
+                [disabled]="!f.valid && !isSearching"
+                color="primary">
+                <mat-icon>search</mat-icon>
+            </button>
+        </div>
+    </form>
+    <div align="center" *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div *ngIf="error">
+        <mat-card class="mat-error">{{ error }}</mat-card>
+    </div>
+    <div class="result-wrapper" *ngIf="!isLoading && !error">
+        <div *ngIf="!isSearchingGroups">
+            <mat-card *ngFor="let result of results" style="width: 360px">
+                <div class="card-header">
+                    <img
+                        mat-card-avatar
+                        src="{{
+                            result?.avatar
+                                ? result.avatar?.url
+                                : 'assets/default/default-profile.jpeg'
+                        }}"
+                        alt="" />
+                    <mat-card-title class="user-mat-card-title">{{
+                        result.name
+                    }}</mat-card-title>
+                </div>
+                <mat-card-actions>
+                    <button
+                        mat-button
+                        color="primary"
+                        (click)="onView(result._id)">
+                        View
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        <div *ngIf="isSearchingGroups">
+            <mat-card *ngFor="let result of groupResults" class="group-card">
+                <mat-card-header align="start">
+                    <img mat-card-avatar src="{{ result?.profile }}" alt="" />
+                    <mat-card-title>{{ result.name }}</mat-card-title>
+                    <mat-card-subtitle>
+                        {{ result.description }}</mat-card-subtitle
+                    >
+                </mat-card-header>
+                <mat-card-actions>
+                    <button
+                        mat-button
+                        color="primary"
+                        (click)="onViewGroup(result._id)">
+                        View
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

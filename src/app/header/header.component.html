@@ -1,0 +1,54 @@
+<mat-toolbar>
+    <div mat-header-row>
+        <button mat-icon-button class="search-button">
+            <a routerLink="/search" routerLinkActive="active">
+                <mat-icon>search</mat-icon>
+            </a>
+        </button>
+    </div>
+    <div align="center">
+        <img
+            src="assets/logo/nexus-logo.png"
+            alt="nexus-logo"
+            style="height: 48px; width: auto" />
+    </div>
+    <div mat-header-row>
+        <button class="icon-style" mat-icon-button>
+            <mat-icon
+                ><a routerLink="/home" routerLinkActive="active"
+                    >home</a
+                ></mat-icon
+            >
+        </button>
+        <button class="icon-style" mat-icon-button>
+            <mat-icon
+                ><a routerLink="/interactions" routerLinkActive="active"
+                    >person_add</a
+                ></mat-icon
+            >
+        </button>
+        <button class="icon-style" mat-icon-button>
+            <mat-icon
+                ><a routerLink="/groups" routerLinkActive="active"
+                    >supervised_user_circle</a
+                ></mat-icon
+            >
+        </button>
+        <button mat-icon-button class="icon-style">
+            <mat-icon [matBadge]="unreadNoti"
+                ><a routerLink="/notifications" routerLinkActive="active"
+                    >public</a
+                ></mat-icon
+            >
+        </button>
+        <button mat-icon-button class="icon-style">
+            <mat-icon
+                ><a routerLink="/user" routerLinkActive="active"
+                    >menu</a
+                ></mat-icon
+            >
+        </button>
+    </div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

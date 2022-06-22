@@ -1,0 +1,33 @@
+<app-header></app-header>
+<div align="center">
+    <div *ngIf="isLoading" align="center">
+        <app-vertical-loader></app-vertical-loader>
+    </div>
+    <mat-card *ngIf="error" class="mat-error">{{ error }}</mat-card>
+
+    <mat-card
+        class="notifications_wrapper"
+        *ngFor="let notification of notifications?.notifications">
+        <span>{{ notification.notification }}</span>
+        <div>
+            <button
+                *ngIf="
+                    !readNoti.includes(notification._id) && !notification.read
+                "
+                mat-icon-button
+                matTooltip="Mark as read"
+                (click)="read(notification._id)">
+                <mat-icon color="primary">check</mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                style="color: gray"
+                matTooltip="Read"
+                *ngIf="
+                    readNoti.includes(notification._id) || notification.read
+                ">
+                <mat-icon>done_all</mat-icon>
+            </button>
+        </div>
+    </mat-card>
+</div>

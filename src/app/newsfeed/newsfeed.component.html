@@ -1,0 +1,39 @@
+<div class="feed-wrapper">
+    <div align="center" *ngIf="isLoading">
+        <app-vertical-loader></app-vertical-loader>
+    </div>
+    <mat-card *ngIf="error" align="center" class="error-snackbar">{{
+        error | uppercase
+    }}</mat-card>
+    <div
+        align="center"
+        *ngIf="!isLoading && !error"
+        class="create-post-button-wrapper">
+        <div>
+            <img
+                *ngIf="user.avatar"
+                (click)="onClickAvatar()"
+                class="user-avatar"
+                matCardAvatar
+                [src]="user?.avatar?.url"
+                alt="user-avatar" />
+            <img
+                *ngIf="!user.avatar"
+                (click)="onClickAvatar()"
+                class="user-avatar"
+                matCardAvatar
+                src="assets/default/default-profile.jpeg"
+                alt="user-avatar" />
+        </div>
+        &nbsp;&nbsp;&nbsp;
+        <button
+            mat-stroked-button
+            class="create-post-button"
+            (click)="onCreatePost()">
+            What's on your mind?
+        </button>
+    </div>
+    <div>
+        <app-newsfeed-posts></app-newsfeed-posts>
+    </div>
+</div>

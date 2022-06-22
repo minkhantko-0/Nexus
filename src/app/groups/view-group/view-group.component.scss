@@ -1,0 +1,59 @@
+mat-card {
+    width: 80%;
+}
+
+.group-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: nowrap;
+}
+
+mat-card-header {
+    display: flex;
+    align-items: flex-start;
+    margin: 24px;
+}
+
+.create-post-button {
+    cursor: pointer;
+    color: white;
+    background: #3f51b5;
+    display: flex;
+    padding: 4px 12px 4px 4px;
+    justify-content: flex-start;
+    align-items: center;
+    border: #3f51b5 1px solid;
+    border-radius: 24px;
+}
+
+.create-post-button span {
+    font-size: large;
+}
+
+.post-display {
+    margin: 32px;
+    min-width: 480px;
+    max-width: 480px;
+}
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mat-card-content-for-post {
+    margin: 0;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-buttons {
+    flex-basis: 33%;
+    margin: 0;
+    padding: 0;
+}

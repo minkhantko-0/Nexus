@@ -1,0 +1,110 @@
+<app-header></app-header>
+<div align="center" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<div class="user-profile-card" *ngIf="!isLoading">
+    <mat-card class="profile-card">
+        <mat-card-actions class="profile-buttons">
+            <button mat-icon-button color="primary" (click)="location.back()">
+                <mat-icon>keyboard_return</mat-icon>
+            </button>
+            <div>
+                <button
+                    *ngIf="
+                        !isAddedFriend &&
+                        !friendRequests.includes(userId) &&
+                        !friends.includes(userId) &&
+                        !requestedFriends.includes(user._id)
+                    "
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Add Friend"
+                    matTooltipShowDelay="100"
+                    matTooltipPosition="before"
+                    (click)="onAddFriend()">
+                    <mat-icon>person_add</mat-icon>
+                </button>
+                <button
+                    *ngIf="
+                        isAddedFriend ||
+                        (friendRequests.includes(userId) &&
+                            !friends.includes(userId))
+                    "
+                    disabled
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Requested"
+                    matTooltipShowDelay="100"
+                    matTooltipPosition="before">
+                    <mat-icon>how_to_reg</mat-icon>
+                </button>
+                <button
+                    *ngIf="requestedFriends.includes(user._id) && !isAccepted"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Accept Friend"
+                    matTooltipShowDelay="100"
+                    matTooltipPosition="before"
+                    (click)="onAcceptFriend()">
+                    <mat-icon>how_to_reg</mat-icon>
+                </button>
+                <button
+                    *ngIf="friends.includes(userId) || isAccepted"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Remove Friend"
+                    matTooltipShowDelay="100"
+                    matTooltipPosition="before"
+                    (click)="onUnfriend()">
+                    <mat-icon>person</mat-icon>
+                </button>
+                <button
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Block user"
+                    matTooltipShowDelay="100"
+                    matTooltipPosition="right"
+                    (click)="onBlockUser()">
+                    <mat-icon>block</mat-icon>
+                </button>
+            </div>
+        </mat-card-actions>
+        <img
+            *ngIf="!user?.avatar"
+            class="profile-picture"
+            mat-card-avatar
+            src="assets/default/default-profile.jpeg"
+            alt="Profile Pic" />
+        <img
+            *ngIf="user?.avatar"
+            class="profile-picture"
+            mat-card-avatar
+            src="{{ user?.avatar?.url }}"
+            alt="Profile Pic" />
+        <h2>{{ user?.name }}</h2>
+        <mat-card-content>
+            <p class="user-info">{{ user?.bio }}</p>
+            <mat-divider></mat-divider>
+            <mat-list>
+                <mat-list-item class="user-info">
+                    <mat-icon>location_city</mat-icon>
+                    {{ user?.hometown }}</mat-list-item
+                >
+                <mat-divider></mat-divider>
+                <mat-list-item class="user-info">
+                    <mat-icon>event_note</mat-icon>
+                    {{ user?.dateOfBirth | date }}</mat-list-item
+                >
+                <mat-divider></mat-divider>
+                <mat-list-item class="user-info">
+                    <mat-icon>local_post_office</mat-icon>
+                    {{ user?.email }}
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+    <div class="gradient-line" style="margin-top: 16px"></div>
+    <div align="center" class="title">Post History</div>
+    <div class="gradient-line"></div>
+    <div><app-view-posts></app-view-posts></div>
+</div>

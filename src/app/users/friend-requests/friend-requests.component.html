@@ -1,0 +1,56 @@
+<div *ngIf="error" align="center" class="mat-error">{{ error }}</div>
+<div align="center" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<div *ngIf="friendRequests?.length === 0 && !isLoading" align="center">
+    <h3 style="color: gray; margin-top: 16px">No Friend Request Yet :(</h3>
+</div>
+<div *ngIf="!error && !isLoading && friendRequests">
+    <div align="center" *ngFor="let request of friendRequests | valueArray">
+        <mat-card align="start">
+            <mat-card-header>
+                <img
+                    *ngIf="request.avatar"
+                    style="width: 68px; height: 68px; cursor: pointer"
+                    matCardAvatar
+                    [src]="request?.avatar?.url"
+                    alt="user-profile"
+                    (click)="viewProfile(request._id)" />
+                <img
+                    *ngIf="!request.avatar"
+                    style="width: 68px; height: 68px; cursor: pointer"
+                    matCardAvatar
+                    src="assets/default/default-profile.jpeg"
+                    alt="user-profile"
+                    (click)="viewProfile(request._id)" />
+                <mat-card-title>{{ request.name }}</mat-card-title>
+                <mat-card-subtitle>
+                    <h3 *ngIf="isDeleted.includes(request._id)">
+                        Request Deleted
+                    </h3>
+                    <h3 *ngIf="isAccepted.includes(request._id)">
+                        You Are Now Friends
+                    </h3>
+                    <mat-card-actions
+                        *ngIf="
+                            !isDeleted.includes(request._id) &&
+                            !isAccepted.includes(request._id)
+                        ">
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            (click)="onAcceptRequest(request._id)">
+                            Accept
+                        </button>
+                        &nbsp;
+                        <button
+                            mat-flat-button
+                            (click)="onDeleteRequest(request._id)">
+                            Delete
+                        </button>
+                    </mat-card-actions>
+                </mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+    </div>
+</div>

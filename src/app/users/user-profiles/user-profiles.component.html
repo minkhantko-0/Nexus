@@ -1,0 +1,72 @@
+<app-header></app-header>
+<div *ngIf="isLoading" align="center">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+<div *ngIf="error" align="center" class="mat-error">{{ error }}</div>
+<div class="user-profile-card" *ngIf="!isLoading && !error">
+    <mat-card class="profile-card">
+        <mat-card-actions class="profile-buttons">
+            <button
+                mat-icon-button
+                [matMenuTriggerFor]="matMenu1"
+                class="user-icon">
+                <mat-icon>group</mat-icon>
+            </button>
+            <mat-menu #matMenu1 xPosition="before">
+                <button mat-menu-item (click)="viewFriends()">Friends</button>
+                <button mat-menu-item (click)='viewBlockedUsers()'>Blocked Users</button>
+            </mat-menu>
+            <button
+                mat-icon-button
+                class="user-icons"
+                [mat-menu-trigger-for]="matMenu2">
+                <mat-icon>more_horiz</mat-icon>
+            </button>
+            <mat-menu #matMenu2>
+                <button mat-menu-item (click)="onEditProfile()">
+                    Edit Profile
+                </button>
+                <button mat-menu-item (click)="onLogOut()">Log Out</button>
+            </mat-menu>
+        </mat-card-actions>
+        <img
+            *ngIf="!retrievedUser.avatar"
+            class="profile-picture"
+            mat-card-avatar
+            src="assets/default/default-profile.jpeg"
+            alt="Profile Pic" />
+        <img
+            *ngIf="retrievedUser.avatar"
+            class="profile-picture"
+            mat-card-avatar
+            src="{{ retrievedUser.avatar.url }}"
+            alt="Profile Pic" />
+        <h2>{{ retrievedUser.name }}</h2>
+        <mat-card-content>
+            <p class="user-info">{{ retrievedUser.bio }}</p>
+            <mat-divider></mat-divider>
+            <mat-list>
+                <mat-list-item class="user-info">
+                    <mat-icon>location_city</mat-icon>
+                    {{ retrievedUser.hometown }}</mat-list-item
+                >
+                <mat-divider></mat-divider>
+                <mat-list-item class="user-info">
+                    <mat-icon>event_note</mat-icon>
+                    {{ retrievedUser.dateOfBirth | date }}</mat-list-item
+                >
+                <mat-divider></mat-divider>
+                <mat-list-item class="user-info">
+                    <mat-icon>local_post_office</mat-icon>
+                    {{ retrievedUser.email }}
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+    <div class="gradient-line" style="margin-top: 16px"></div>
+    <div align="center" class="title">Post History</div>
+    <div class="gradient-line"></div>
+    <div>
+        <app-user-posts></app-user-posts>
+    </div>
+</div>

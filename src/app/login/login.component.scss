@@ -1,0 +1,57 @@
+div {
+    margin: 8px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+form {
+    padding: 32px 0;
+    text-align: center;
+    width: 320px;
+}
+
+.login-field {
+    min-height: 4rem !important;
+    height: 5rem !important;
+    padding: 0;
+    margin-bottom: 24px;
+}
+
+.tnc-style {
+    padding: 24px 0;
+    font-weight: normal;
+}
+
+.tnc-layout {
+    align-items: center;
+}
+
+.logo-wrapper {
+}
+.logo-design {
+    font-size: inherit;
+    background: #3f51b5;
+    background: radial-gradient(
+        ellipse farthest-corner at center center,
+        #3f51b5 37%,
+        #cf34bf 57%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-header button {
+    font-size: inherit;
+    background: #d25ffb;
+    background: linear-gradient(to right bottom, #3f51b5 37%, #cf34bf 57%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.error-snackbar{
+  font-weight: 480;
+  color: white;
+  margin-bottom: 16px;
+  background: #f44336;
+}
